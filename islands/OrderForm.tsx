@@ -21,6 +21,7 @@ export default function OrderForm() {
     phone: "",
     pickup: "lunch",
     pickupDate: "", // Added pickupDate to the form data
+    paymentReceipt: "",
   });
 
   useEffect(() => {
@@ -147,6 +148,15 @@ export default function OrderForm() {
           <option value="lunch">Lunch (12:00 PM)</option>
           <option value="dinner">Dinner (6:00 PM)</option>
         </select>
+
+        <label class="block mb-2">Payment Receipt Number:</label>
+        <input
+          type="text"
+          name="paymentReceipt"
+          value={formData.paymentReceipt}
+          onChange={handleInputChange}
+          class="w-full p-2 mb-4"
+        />
 
         <p class="text-xl font-semibold">Total: ${total}</p>
 
