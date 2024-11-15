@@ -1,6 +1,7 @@
 import { JSX } from "preact";
 import { useState } from "preact/hooks";
 
+// Menu item property interface
 interface MenuItemProps {
   name: string;
   image: string;
@@ -27,28 +28,36 @@ export default function MenuItem(
   };
 
   return (
-    <div class="bg-white p-4 rounded shadow-lg m-4 w-full sm:w-1/2 md:w-1/3 lg:w-1/4">
-      <img src={image} alt={name} class="w-full h-32 object-cover rounded" />
-      <h2 class="text-xl font-bold mt-2">{name}</h2>
+    <div class="flex items-center p-2">
+      {/* Image */}
+      <img
+        src={image}
+        alt={name}
+        class="h-[50%] w-[50%] object-cover mr-4 md:h-[20%] md:w-[20%] lg:h-[20%] lg:w-[20%]"
+      />
 
-      <label class="block mt-2">Size:</label>
-      <select onChange={handleSizeChange} class="text-black w-full">
-        <option value="0">Select Size</option>
-        {sizes.map((size) => (
-          <option value={size.price} key={size.label}>
-            {size.label} - ${size.price}
-          </option>
-        ))}
-      </select>
+      {/* Text and controls */}
+      <div>
+        <h2 class="text-xl font-bold text-white">{name}</h2>
+        <label class="block mt-2 text-white">Size:</label>
+        <select onChange={handleSizeChange} class="text-black w-full mb-2">
+          <option value="0">Select Size</option>
+          {sizes.map((size) => (
+            <option value={size.price} key={size.label}>
+              {size.label} - ${size.price}
+            </option>
+          ))}
+        </select>
 
-      <label class="block mt-2">Quantity:</label>
-      <select onChange={handleQtyChange} class="text-black w-full">
-        {Array.from({ length: 10 }, (_, i) => (
-          <option value={i + 1} key={i}>
-            {i + 1}
-          </option>
-        ))}
-      </select>
+        <label class="block text-white">Quantity:</label>
+        <select onChange={handleQtyChange} class="text-black w-full">
+          {Array.from({ length: 10 }, (_, i) => (
+            <option value={i + 1} key={i}>
+              {i + 1}
+            </option>
+          ))}
+        </select>
+      </div>
     </div>
   );
 }
