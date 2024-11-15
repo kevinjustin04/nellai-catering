@@ -1,12 +1,28 @@
 # Nellai Catering Site
+
+## Fresh new page for the catering site built with fresh
+
 ### Usage
-
-Make sure to install Deno: https://deno.land/manual/getting_started/installation
-
-Then start the project:
-
 ```
 deno task start
 ```
 
-This will watch the project directory and restart as necessary.
+## TODO
+- [ ] Write Comments
+    - [ ] Components
+        - [x] DateSelector
+        - [ ] MenuItem
+        - [x] Top
+    - [ ] Islands
+        - [ ] OrderForm
+    - [ ] Routes
+        - [ ] index
+        - [ ] _404
+        - [ ] _app
+    - [ ] api
+        - [ ] available-dates
+        - [ ] menu
+        - [ ] orders
+    - [ ] utils
+        - [ ] db
+
