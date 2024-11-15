@@ -58,7 +58,7 @@ export default function OrderForm() {
     // Calculate new total
     const newTotal = updatedItems.reduce(
       (acc, item) => acc + item.size * item.qty,
-      0
+      0,
     );
     setTotal(newTotal);
   };
@@ -68,7 +68,6 @@ export default function OrderForm() {
     setFormData({ ...formData, [name]: value });
   };
 
-  // New handler for setting the pickup date
   const handlePickupDateChange = (date: string) => {
     setFormData({ ...formData, pickupDate: date });
   };
@@ -92,8 +91,39 @@ export default function OrderForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} class="p-4 bg-gray-100 rounded-lg shadow-lg">
-      <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+    <form onSubmit={handleSubmit} class="p-4 rounded-lg shadow-lg">
+      <div class="mt-4">
+        <label class="block mb-2 text-white">Name:</label>
+        <input
+          type="text"
+          name="name"
+          value={formData.name}
+          onChange={handleInputChange}
+          class="w-full p-2 mb-4"
+          required
+        />
+
+        <label class="block mb-2 text-white">Email:</label>
+        <input
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={handleInputChange}
+          class="w-full p-2 mb-4"
+          required
+        />
+
+        <label class="block mb-2 text-white">Phone:</label>
+        <input
+          type="tel"
+          name="phone"
+          value={formData.phone}
+          onChange={handleInputChange}
+          class="w-full p-2 mb-4"
+          required
+        />
+      </div>
+      <div>
         {menuItems.map((item) => (
           <MenuItem
             key={item.name}
@@ -106,40 +136,11 @@ export default function OrderForm() {
       </div>
 
       <div class="mt-4">
-        <label class="block mb-2">Name:</label>
-        <input
-          type="text"
-          name="name"
-          value={formData.name}
-          onChange={handleInputChange}
-          class="w-full p-2 mb-4"
-          required
-        />
-
-        <label class="block mb-2">Email:</label>
-        <input
-          type="email"
-          name="email"
-          value={formData.email}
-          onChange={handleInputChange}
-          class="w-full p-2 mb-4"
-          required
-        />
-
-        <label class="block mb-2">Phone:</label>
-        <input
-          type="tel"
-          name="phone"
-          value={formData.phone}
-          onChange={handleInputChange}
-          class="w-full p-2 mb-4"
-          required
-        />
-
         <DateSelector onSelectDate={handlePickupDateChange} />
 
-        <label class="block mb-2">Pickup Time:</label>
+        <label class="block mb-2 text-white">Pickup Time:</label>
         <select
+          required
           name="pickup"
           value={formData.pickup}
           onChange={handleInputChange}
@@ -149,16 +150,23 @@ export default function OrderForm() {
           <option value="dinner">Dinner (6:00 PM)</option>
         </select>
 
-        <label class="block mb-2">Payment Receipt Number:</label>
+        <p class="text-xl text-white mb-3">Pay through Zelle to: <span class="text-orange-500">(980) 833 - 6560</span></p>
+
+        <p class="text-xl font-semibold text-white mb-3">Total: ${total}</p>
+
+        <label class="block mb-2 text-white">
+          Please verify your order and enter payment amount and zelle
+          transaction number. We will send an order confirmation through email.
+        </label>
         <input
+          required
           type="text"
+          placeholder={"Total Amount, Transaction Number"}
           name="paymentReceipt"
           value={formData.paymentReceipt}
           onChange={handleInputChange}
           class="w-full p-2 mb-4"
         />
-
-        <p class="text-xl font-semibold">Total: ${total}</p>
 
         <button type="submit" class="bg-blue-500 text-white p-2 mt-4 rounded">
           Submit Order
