@@ -1,3 +1,9 @@
+/*
+// Preact component
+// 
+// name: Top
+// description: Literally the top bar
+*/
 export default function Top() {
   return (
     <div class="bg-black p-4 pt-6 flex items-center justify-between">
