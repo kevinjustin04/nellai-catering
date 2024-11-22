@@ -7,18 +7,18 @@ interface DateSelectorProps {
 
 /*
 // Preact component
-// 
+//
 // name: DateSelector
 // description: Date Selector to select pickup date
 */
 export default function DateSelector({ onSelectDate }: DateSelectorProps) {
   /*
   // Preact useState
-  //  
+  //
   // availableDates: an array string for the dates that are available to order on
-  // setAvailableDates: the function that updates the available dates 
+  // setAvailableDates: the function that updates the available dates
   */
-  const [availableDates, setAvailableDates] = useState<string[]>([]); 
+  const [availableDates, setAvailableDates] = useState<string[]>([]);
 
   useEffect(() => {
     const today = new Date(); // todays date
@@ -26,7 +26,7 @@ export default function DateSelector({ onSelectDate }: DateSelectorProps) {
 
     // Generate the next 30 days and select only Friday, Saturday, and Sunday
     for (let i = 0; i < 30; i++) {
-      const currentDate = new Date(today); 
+      const currentDate = new Date(today);
       currentDate.setDate(today.getDate() + i);
 
       const dayOfWeek = currentDate.getDay();
