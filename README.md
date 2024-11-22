@@ -1,6 +1,6 @@
 # Nellai Catering Site
 
-## Fresh new page for the catering site built with fresh
+## Website for Nellai Catering built with Deno Fresh and Typescript
 
 ### Usage
 ```
