@@ -1,18 +1,22 @@
-// components/OrderForm.tsx
 import { useEffect, useState } from "preact/hooks";
 import MenuItem from "../components/MenuItem.tsx";
 import DateSelector from "../components/DateSelector.tsx";
 
+// Menu item data interface
 interface MenuItemData {
   name: string;
   image: string;
   sizes: { label: string; price: number }[];
 }
 
+/**
+ * OrderForm Component
+ * Handles the ordering process, including menu item selection and form submission.
+ */
 export default function OrderForm() {
   const [menuItems, setMenuItems] = useState<MenuItemData[]>([]);
   const [items, setItems] = useState<
-    { name: string; size: number; qty: number }[]
+    { name: string; sizeLabel: string; sizePrice: number; qty: number }[]
   >([]);
   const [total, setTotal] = useState(0);
   const [formData, setFormData] = useState({
@@ -20,12 +24,12 @@ export default function OrderForm() {
     email: "",
     phone: "",
     pickup: "lunch",
-    pickupDate: "", // Added pickupDate to the form data
+    pickupDate: "",
     paymentReceipt: "",
   });
 
+  // Fetch menu data on mount
   useEffect(() => {
-    // Fetch menu data from the API on component mount
     const fetchMenu = async () => {
       try {
         const res = await fetch("/api/menu");
@@ -39,39 +43,48 @@ export default function OrderForm() {
     fetchMenu();
   }, []);
 
-  const handleMenuItemChange = (name: string, size: number, qty: number) => {
+  // Handle menu item changes
+  const handleMenuItemChange = (
+    name: string,
+    sizeLabel: string,
+    sizePrice: number,
+    qty: number,
+  ) => {
     const itemIndex = items.findIndex((item) => item.name === name);
     let updatedItems;
 
     if (itemIndex > -1) {
       // Update existing item
       updatedItems = items.map((item, index) =>
-        index === itemIndex ? { ...item, size, qty } : item
+        index === itemIndex ? { ...item, sizeLabel, sizePrice, qty } : item
       );
     } else {
       // Add new item
-      updatedItems = [...items, { name, size, qty }];
+      updatedItems = [...items, { name, sizeLabel, sizePrice, qty }];
     }
 
     setItems(updatedItems);
 
     // Calculate new total
     const newTotal = updatedItems.reduce(
-      (acc, item) => acc + item.size * item.qty,
+      (acc, item) => acc + item.sizePrice * item.qty,
       0,
     );
     setTotal(newTotal);
   };
 
+  // Handle input changes
   const handleInputChange = (e: Event) => {
     const { name, value } = e.target as HTMLInputElement;
     setFormData({ ...formData, [name]: value });
   };
 
+  // Handle pickup date changes
   const handlePickupDateChange = (date: string) => {
     setFormData({ ...formData, pickupDate: date });
   };
 
+  // Handle form submission
   const handleSubmit = async (e: Event) => {
     e.preventDefault();
 
@@ -92,7 +105,7 @@ export default function OrderForm() {
 
   return (
     <form onSubmit={handleSubmit} class="p-4 rounded-lg shadow-lg">
-      <div class="mt-4">
+      <div>
         <label class="block mb-2 text-white">Name:</label>
         <input
           type="text"
@@ -130,7 +143,8 @@ export default function OrderForm() {
             name={item.name}
             image={item.image}
             sizes={item.sizes}
-            onChange={(size, qty) => handleMenuItemChange(item.name, size, qty)}
+            onChange={(sizeLabel, sizePrice, qty) =>
+              handleMenuItemChange(item.name, sizeLabel, sizePrice, qty)}
           />
         ))}
       </div>
@@ -150,18 +164,21 @@ export default function OrderForm() {
           <option value="dinner">Dinner (6:00 PM)</option>
         </select>
 
-        <p class="text-xl text-white mb-3">Pay through Zelle to: <span class="text-orange-500">(980) 833 - 6560</span></p>
+        <p class="text-xl text-white mb-3">
+          Pay through Zelle to:{" "}
+          <span class="text-orange-500">(980) 833 - 6560</span>
+        </p>
 
         <p class="text-xl font-semibold text-white mb-3">Total: ${total}</p>
 
         <label class="block mb-2 text-white">
-          Please verify your order and enter payment amount and zelle
+          Please verify your order and enter payment amount and Zelle
           transaction number. We will send an order confirmation through email.
         </label>
         <input
           required
           type="text"
-          placeholder={"Total Amount, Transaction Number"}
+          placeholder="Total Amount, Transaction Number"
           name="paymentReceipt"
           value={formData.paymentReceipt}
           onChange={handleInputChange}

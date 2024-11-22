@@ -6,25 +6,34 @@ interface MenuItemProps {
   name: string;
   image: string;
   sizes: { label: string; price: number }[];
-  onChange: (size: number, qty: number) => void;
+  onChange: (sizeLabel: string, sizePrice: number, qty: number) => void;
 }
 
+/**
+ * MenuItem Component
+ * Represents an individual menu item with options to select size and quantity.
+ */
 export default function MenuItem(
   { name, image, sizes, onChange }: MenuItemProps,
 ) {
-  const [selectedSize, setSelectedSize] = useState(0);
+  const [selectedSize, setSelectedSize] = useState({ label: "", price: 0 });
   const [selectedQty, setSelectedQty] = useState(1);
 
+  // Handle size change
   const handleSizeChange = (e: JSX.TargetedEvent<HTMLSelectElement, Event>) => {
-    const size = parseInt((e.target as HTMLSelectElement).value, 10);
+    const selectedIndex = (e.target as HTMLSelectElement).selectedIndex - 1; // Exclude "Select Size"
+    const size = sizes[selectedIndex];
+    if (!size) return;
+
     setSelectedSize(size);
-    onChange(size, selectedQty); // Pass both size and current quantity
+    onChange(size.label, size.price, selectedQty); // Pass label and price
   };
 
+  // Handle quantity change
   const handleQtyChange = (e: JSX.TargetedEvent<HTMLSelectElement, Event>) => {
     const qty = parseInt((e.target as HTMLSelectElement).value, 10);
     setSelectedQty(qty);
-    onChange(selectedSize, qty); // Pass current size and new quantity
+    onChange(selectedSize.label, selectedSize.price, qty); // Pass current size and new quantity
   };
 
   return (
